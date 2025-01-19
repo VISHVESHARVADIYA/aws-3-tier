@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login System</title>
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    alert('Login successful!');
+                    // Redirect to dashboard or home page
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
 
